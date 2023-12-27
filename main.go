@@ -3,9 +3,10 @@ package main
 import (
 	"aoc-2023/day1"
 	"aoc-2023/day2"
-	"flag"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 		day1.Solution("2", false)
 	case day == 2:
 
-		val, err := day2.Solution("2", true)
+		val, err := day2.Solution("2", false)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -30,10 +31,16 @@ func main() {
 }
 
 func getDay() int {
-	var dayPtr = flag.Int("d", 1, "n sei oq e isso")
-	var day = *dayPtr
+	var dayString = os.Args[1]
+
+	day, err := strconv.ParseInt(dayString, 10, 64)
+	if err != nil {
+		log.Fatal("Invalid date received")
+	}
+
+	fmt.Printf("day variable: %d \n", day)
 	if day < 1 {
 		day = 1
 	}
-	return day
+	return int(day)
 }

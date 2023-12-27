@@ -8,9 +8,9 @@ import (
 )
 
 type Subset struct {
-	red   int
-	green int
-	blue  int
+	Red   int
+	Green int
+	Blue  int
 }
 
 func (subsetPtr *Subset) setResultFromBallString(ballString string) {
@@ -37,16 +37,15 @@ func (subsetPtr *Subset) setResultFromBallString(ballString string) {
 
 	switch {
 	case ball == "red":
-		subsetPtr.red += int(castedNumber)
+		subsetPtr.Red += int(castedNumber)
 	case ball == "blue":
-		subsetPtr.blue += int(castedNumber)
+		subsetPtr.Blue += int(castedNumber)
 	case ball == "green":
-		subsetPtr.green += int(castedNumber)
+		subsetPtr.Green += int(castedNumber)
 	}
 }
 
 type game []Subset
-type words []string
 
 func Solution(input string, isTest bool) (int, error) {
 	text, err := getInput(input, isTest)
@@ -73,11 +72,8 @@ func getGames(text string) []game {
 func splitTextIntoGameStrings(text string) []string {
 	var separatedGames = strings.Split(text, "\n")
 	var stringsToReturn []string
-	for _, gameString := range separatedGames {
+	for _, gameString := range separatedGames[:len(separatedGames)-1] {
 		// all strings are expected to be ASCII chars
-		if len(gameString) < 7 {
-			continue
-		}
 		separatedGameString := strings.Split(gameString, ":")
 		gameStringWithoutInitialPart := separatedGameString[1]
 		stringsToReturn = append(stringsToReturn, gameStringWithoutInitialPart)
@@ -102,29 +98,24 @@ func getGameFromGameString(gameString string) game {
 }
 
 var SolutionMaxValues = Subset{
-	red:   12,
-	green: 13,
-	blue:  14,
+	Red:   12,
+	Green: 13,
+	Blue:  14,
 }
 
 func returnValidGamesSum(gamesPtr *[]game) int {
-	var maxNumberOfTotalBalls = SolutionMaxValues.blue + SolutionMaxValues.green + SolutionMaxValues.red
 	var sum int
 	for gameIdx, game := range *gamesPtr {
-		var greenBallsFromGame int
-		var redBallsFromGame int
-		var blueBallsFromGame int
-
+		var allRoundsAreValid = true
 		for _, round := range game {
-			greenBallsFromGame += round.green
-			redBallsFromGame += round.red
-			blueBallsFromGame += round.blue
+			if !(round.Green <= SolutionMaxValues.Green &&
+				round.Blue <= SolutionMaxValues.Blue &&
+				round.Red <= SolutionMaxValues.Red) {
+				allRoundsAreValid = false
+				break
+			}
 		}
-
-		if greenBallsFromGame <= SolutionMaxValues.green &&
-			blueBallsFromGame <= SolutionMaxValues.blue &&
-			redBallsFromGame <= SolutionMaxValues.red &&
-			greenBallsFromGame+blueBallsFromGame+redBallsFromGame <= maxNumberOfTotalBalls {
+		if allRoundsAreValid {
 			sum += gameIdx + 1
 		}
 	}

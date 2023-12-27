@@ -23,5 +23,9 @@ func TestDayTwoQuestionParam(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if val != 2685 {
+		t.Error("Expected 2685, got " + fmt.Sprint(val))
+	}
 	fmt.Println(val)
 }
