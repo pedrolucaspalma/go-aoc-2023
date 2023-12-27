@@ -2,8 +2,10 @@ package main
 
 import (
 	"aoc-2023/day1"
+	"aoc-2023/day2"
 	"flag"
 	"fmt"
+	"log"
 )
 
 func main() {
@@ -12,9 +14,18 @@ func main() {
 
 	switch {
 	case day == 1:
+		// Error handling on this function could be better
 		day1.Solution("2", false)
+	case day == 2:
+
+		val, err := day2.Solution("2", true)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Day2 solution \n")
+		fmt.Printf("Sum: %d\n", val)
 	default:
-		panic("Invalid date received")
+		log.Fatal("Invalid date received")
 	}
 }
 
