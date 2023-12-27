@@ -19,12 +19,13 @@ func main() {
 		day1.Solution("2", false)
 	case day == 2:
 
-		val, err := day2.Solution("2", false)
+		val, pwr, err := day2.Solution("2", false)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Printf("Day2 solution \n")
 		fmt.Printf("Sum: %d\n", val)
+		fmt.Printf("Sum: %d\n", pwr)
 	default:
 		log.Fatal("Invalid date received")
 	}

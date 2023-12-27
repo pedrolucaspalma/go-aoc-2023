@@ -2,6 +2,7 @@ package day2
 
 import (
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -47,15 +48,16 @@ func (subsetPtr *Subset) setResultFromBallString(ballString string) {
 
 type game []Subset
 
-func Solution(input string, isTest bool) (int, error) {
+func Solution(input string, isTest bool) (int, int, error) {
 	text, err := getInput(input, isTest)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
 	games := getGames(text)
 	sum := returnValidGamesSum(&games)
-	return sum, nil
+	pwr := returnGamesCubesPowerSum(&games)
+	return sum, pwr, nil
 }
 
 func getGames(text string) []game {
@@ -120,6 +122,24 @@ func returnValidGamesSum(gamesPtr *[]game) int {
 		}
 	}
 	return sum
+}
+
+func returnGamesCubesPowerSum(gamesPtr *[]game) int {
+	var sum int
+
+	for _, game := range *gamesPtr {
+		var greenAux int
+		var redAux int
+		var blueAux int
+		for _, round := range game {
+			greenAux = int(math.Max(float64(greenAux), float64(round.Green)))
+			redAux = int(math.Max(float64(redAux), float64(round.Red)))
+			blueAux = int(math.Max(float64(blueAux), float64(round.Blue)))
+		}
+		sum += (greenAux * redAux * blueAux)
+	}
+	return sum
+
 }
 
 func getInput(input string, isTest bool) (string, error) {
